@@ -1,0 +1,10 @@
+{
+  "name": "avelyn-memory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cli": "node --no-warnings src/cli.ts",
+    "test": "node --no-warnings --test src/*.test.ts"
+  }
+}

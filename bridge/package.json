@@ -1,0 +1,11 @@
+{
+  "name": "avelyn-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cli": "node --env-file-if-exists=.env src/cli.ts",
+    "server": "node --env-file-if-exists=.env src/server.ts",
+    "test": "node --test src/*.test.ts"
+  }
+}

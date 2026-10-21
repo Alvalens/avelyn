@@ -1,0 +1,33 @@
+# Dependencies and build output
+node_modules/
+dist/
+dist-ssr/
+
+# Secrets — every package keeps a committed .env.example instead
+.env
+.env.*
+!.env.example
+
+# Runtime data (memory DB, logs)
+memory/data/
+*.log
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Screenshots she takes (may contain anything on screen)
+vision/captures/
+
+# Whisper binary + model (large)
+ears/whisper/
+.superpowers/
+
+# Per-machine mirror of the app's vision settings
+vision/settings.json
+
+# The generated public copy (its own git repo) - see Export-Public.ps1
+/public/

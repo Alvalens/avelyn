@@ -1,0 +1,9 @@
+{
+  "name": "avelyn-ears",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --no-warnings --test src/*.test.ts src/brain/*.test.ts"
+  }
+}

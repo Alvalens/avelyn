@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'" />
+<title>Avelyn</title>
+<style>
+  :root {
+    --ink: #e8e6f0;
+    --dim: #8b8798;
+    --idle: #6d6a7a;
+    --live: #7fe0c4;
+    --work: #e0c07f;
+    --bad:  #e08a8a;
+    --panel: rgba(18, 17, 24, 0.82);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    /* The window cannot take focus, so nothing here should pretend it can. */
+    user-select: none;
+    cursor: default;
+  }
+
+  .hud {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 100%;
+    padding: 16px 22px;
+    border-radius: 18px;
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    /* Draggable so it can be parked wherever it is least in the way. */
+    -webkit-app-region: drag;
+    transition: opacity 220ms ease;
+    opacity: 0.42;
+  }
+
+  .hud[data-state="listening"],
+  .hud[data-state="transcribing"],
+  .hud[data-state="thinking"],
+  .hud[data-state="reply"],
+  .hud[data-state="error"] { opacity: 1; }
+
+  /* ---- indicator ---- */
+
+  .meter {
+    position: relative;
+    flex: 0 0 auto;
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+  }
+
+  .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--idle);
+    transition: background 200ms ease, transform 200ms ease;
+    grid-area: 1 / 1;
+  }
+
+  .hud[data-state="listening"] .dot   { background: var(--live); }
+  .hud[data-state="transcribing"] .dot,
+  .hud[data-state="thinking"] .dot    { background: var(--work); }
+  .hud[data-state="reply"] .dot       { background: var(--ink); }
+  .hud[data-state="error"] .dot       { background: var(--bad); }
+
+  /* Live mic level: the one piece of feedback that proves it can hear you. */
+  .hud[data-state="listening"] .dot { transform: scale(calc(1 + var(--level, 0) * 1.6)); }
+
+  .ring {
+    grid-area: 1 / 1;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    transition: border-color 200ms ease;
+  }
+
+  .hud[data-state="listening"] .ring {
+    border-color: color-mix(in srgb, var(--live) calc(30% + var(--level, 0) * 70%), transparent);
+  }
+
+  .hud[data-state="thinking"] .ring,
+  .hud[data-state="transcribing"] .ring {
+    border-color: rgba(224, 192, 127, 0.5);
+    border-top-color: transparent;
+    animation: spin 900ms linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---- text ---- */
+
+  /* max-height so a reply past the window's cap leaves the text, not the
+     label, to shrink and scroll. */
+  .body { min-width: 0; max-height: 100%; flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px; }
+
+  .label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .text {
+    font-size: 14.5px;
+    line-height: 1.4;
+    color: var(--ink);
+    /* The whole reply, not two clipped lines: the window grows to fit it
+       (hud.js fitToText). Past main's height cap it scrolls. */
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  /* Only a reply long enough to scroll leaves the drag region: a drag region
+     swallows the wheel. Making the text no-drag all the time meant a bubble
+     showing any text could only be moved by its dot and its label. */
+  .text.scrolls { -webkit-app-region: no-drag; }
+
+  .label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+
+  /* Which brain she is running on, out of the way. */
+  .model {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .hud[data-state="thinking"] .text { color: var(--dim); font-style: italic; }
+  .hud[data-state="error"] .text    { color: var(--bad); }
+
+  .text:empty { display: none; }
+</style>
+</head>
+<body>
+  <div class="hud" id="hud" data-state="idle">
+    <div class="meter">
+      <div class="ring"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="body">
+      <div class="label-row">
+        <div class="label" id="label">Avelyn</div>
+        <div class="model" id="model"></div>
+      </div>
+      <div class="text" id="text"></div>
+    </div>
+  </div>
+  <script src="silence-detector.js"></script>
+  <script src="hud.js"></script>
+</body>
+</html>
