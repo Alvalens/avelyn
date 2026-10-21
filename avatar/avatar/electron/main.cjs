@@ -480,9 +480,7 @@ function createWindow() {
   if (process.env.AVATAR_GEN_THUMBS) {
     // The generator's only progress report is renderer-side console output,
     // and this window is frameless with no DevTools accelerator.
-    mainWindow.webContents.on('console-message', (...args) => {
-      const details = args[1];
-      const message = details && typeof details === 'object' ? details.message : args[2];
+    mainWindow.webContents.on('console-message', ({ message }) => {
       if (typeof message === 'string') console.log(message);
     });
   }

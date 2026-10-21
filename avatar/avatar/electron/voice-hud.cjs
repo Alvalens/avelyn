@@ -170,9 +170,9 @@ function createBubble({ show = true, extraArgs = [] } = {}) {
   bubble.setAlwaysOnTop(true, 'screen-saver');
 
   // Renderer errors are otherwise invisible in a window with no devtools.
-  bubble.webContents.on('console-message', (_event, level, message, line, source) => {
-    const tag = ['debug', 'info', 'warn', 'error'][level] ?? 'log';
-    console.log(`[voice-hud:${tag}] ${message} (${source}:${line})`);
+  // Electron 35 moved the details onto the event; `level` is now a string.
+  bubble.webContents.on('console-message', ({ level, message, lineNumber, sourceId }) => {
+    console.log(`[voice-hud:${level}] ${message} (${sourceId}:${lineNumber})`);
   });
   bubble.webContents.on('did-finish-load', () => {
     // A bubble recreated for a new mic still shows what she runs on.
