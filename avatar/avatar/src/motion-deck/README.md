@@ -2,7 +2,10 @@
 
 A short, user-built list of clips that can be fired — by key or by click —
 without changing what Gear → **Animations** is set to. Each fires once and hands
-the stage back to the selection. Settings → **Animation hotkeys**. (ARPAHLS/avatar#24)
+the stage back to the selection. (ARPAHLS/avatar#24)
+
+Its Settings panel was removed on 2026-10-20 (with the files that only it used);
+bindings already in `config.yaml` (`motionDeck`) still play. Edit them there.
 
 ## What is in here
 
@@ -10,12 +13,9 @@ the stage back to the selection. Settings → **Animation hotkeys**. (ARPAHLS/av
 | :--- | :--- |
 | `chords.js` | keyboard chords as text, keyed off `event.code` |
 | `motionDeck.js` | the deck itself: normalize, resolve, bind, heal |
-| `useMotionDeck.js` | the one key listener, plus the panel's actions |
-| `MotionDeckPanel.jsx` | Not shown anywhere: removed from Settings 2026-10-20. Bindings already in config.yaml (`motionDeck`) still play. |
-| `containNestedWheel.js` / `useContainNestedWheel.js` | nested list wheel vs GlassDrawer |
-| `motionDeck.css` | imported by the panel, not by the global stylesheet |
+| `useMotionDeck.js` | the one key listener |
 
-`chords.js`, `motionDeck.js`, and `containNestedWheel.js` are pure and covered by
+`chords.js` and `motionDeck.js` are pure and covered by
 `node --test`.
 
 ## What it is built on, and what it is not

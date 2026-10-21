@@ -2,6 +2,12 @@
 
 **Turn the AI subscription you already pay for into a desktop waifu.**
 
+<p align="center">
+  <img src="docs/images/avelyn-greeting.png" alt="Avelyn on the desktop, greeting: &quot;Morning. You're up early.&quot; — subtitle bubble showing she runs on Claude Code (claude-sonnet-5-5)" width="380">
+  <br>
+  <em>Right after launch: she greets you out loud, with the line in the bubble.</em>
+</p>
+
 Avelyn is an anime companion who lives on your screen as an animated 3D avatar. You hold
 a hotkey and talk; she answers out loud, in her own voice, with a subtitle bubble and a
 gesture to match. She remembers what you tell her, can look at your screen when you ask,
